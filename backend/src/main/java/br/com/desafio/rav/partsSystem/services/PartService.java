@@ -33,4 +33,15 @@ public class PartService {
 		return new PartDTO(entity);
 	}
 
+	@Transactional
+	public PartDTO insert(PartDTO dto) {
+		Part entity = new Part();
+		entity.setName(dto.getName());
+		entity.setWeight(dto.getWeight());
+		entity.setPrice(dto.getPrice());
+		entity.setType(dto.getType());
+		entity = repository.save(entity);
+		return new PartDTO(entity);
+	}
+
 }
