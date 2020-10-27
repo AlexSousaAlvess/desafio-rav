@@ -8,11 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import br.com.desafio.rav.partsSystem.entities.enums.Type;
-
 @Entity
-@Table(name = "tb_part")
-public class Part implements Serializable {
+@Table(name = "tb_part_child")
+public class PartChild implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -21,13 +19,13 @@ public class Part implements Serializable {
 	private String name;
 	private double weight;
 	private double price;
-	private Type type;
+	private String type;
 
-	public Part() {
+	public PartChild() {
 
 	}
 
-	public Part(Long id, String name, double weight, double price, Type type) {
+	public PartChild(Long id, String name, double weight, double price, String type) {
 		this.id = id;
 		this.name = name;
 		this.weight = weight;
@@ -67,11 +65,11 @@ public class Part implements Serializable {
 		this.price = price;
 	}
 
-	public Type getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(Type type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -91,7 +89,7 @@ public class Part implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Part other = (Part) obj;
+		PartChild other = (PartChild) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

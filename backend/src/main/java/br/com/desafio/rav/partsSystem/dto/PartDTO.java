@@ -3,6 +3,7 @@ package br.com.desafio.rav.partsSystem.dto;
 import java.io.Serializable;
 
 import br.com.desafio.rav.partsSystem.entities.Part;
+import br.com.desafio.rav.partsSystem.entities.enums.Type;
 
 public class PartDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -11,13 +12,13 @@ public class PartDTO implements Serializable {
 	private String name;
 	private double weight;
 	private double price;
-	private String type;
+	private Type type;
 
 	public PartDTO() {
 
 	}
 
-	public PartDTO(Long id, String name, double weight, double price, String type) {
+	public PartDTO(Long id, String name, double weight, double price, Type type) {
 		this.id = id;
 		this.name = name;
 		this.weight = weight;
@@ -65,11 +66,11 @@ public class PartDTO implements Serializable {
 		this.price = price;
 	}
 
-	public String getType() {
+	public Type getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(Type type) {
 		this.type = type;
 	}
 
