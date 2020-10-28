@@ -1,7 +1,7 @@
 package br.com.desafio.rav.partsSystem.entities.enums;
 
-public enum Type {
+public enum Status {
 	Geral,
 	Exterior,
-	Interior
+	Interior;
 }
