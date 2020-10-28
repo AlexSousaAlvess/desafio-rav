@@ -6,17 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 import br.com.desafio.rav.partsSystem.entities.Part;
-import br.com.desafio.rav.partsSystem.entities.PartChild;
-import br.com.desafio.rav.partsSystem.entities.enums.Status;
+import br.com.desafio.rav.partsSystem.entities.Simulation;
 
 public class SimulationDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	private long id;
 	private String name;
-	private double weight;
-	private double price;
-	private Status type;
+	private String description;
 	
 	private List<PartDTO> parts = new ArrayList<>();
 
@@ -24,23 +21,19 @@ public class SimulationDTO implements Serializable {
 
 	}
 
-	public SimulationDTO(Long id, String name, double weight, double price, Status type) {
+	public SimulationDTO(Long id, String name, String description) {
 		this.id = id;
 		this.name = name;
-		this.weight = weight;
-		this.price = price;
-		this.type = type;
+		this.description = description;
 	}
 
-	public SimulationDTO(PartChild entity) {
+	public SimulationDTO(Simulation entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
-		this.weight = entity.getWeight();
-		this.price = entity.getPrice();
-		this.type = entity.getType();
+		this.description = entity.getDescription();
 	}
 	
-	public SimulationDTO(PartChild entity, Set<Part> parts) {
+	public SimulationDTO(Simulation entity, Set<Part> parts) {
 		this(entity);
 		parts.forEach(p -> this.parts.add(new PartDTO(p)));
 	}
@@ -61,28 +54,12 @@ public class SimulationDTO implements Serializable {
 		this.name = name;
 	}
 
-	public double getWeight() {
-		return weight;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setWeight(double weight) {
-		this.weight = weight;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public Status getType() {
-		return type;
-	}
-
-	public void setType(Status type) {
-		this.type = type;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }

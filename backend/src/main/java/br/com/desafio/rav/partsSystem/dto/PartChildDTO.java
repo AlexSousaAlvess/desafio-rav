@@ -1,11 +1,7 @@
 package br.com.desafio.rav.partsSystem.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
-import br.com.desafio.rav.partsSystem.entities.Part;
 import br.com.desafio.rav.partsSystem.entities.PartChild;
 import br.com.desafio.rav.partsSystem.entities.enums.Status;
 

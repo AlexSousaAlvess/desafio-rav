@@ -12,53 +12,49 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.desafio.rav.partsSystem.dto.PartDTO;
-import br.com.desafio.rav.partsSystem.entities.Part;
-import br.com.desafio.rav.partsSystem.repositories.PartRepository;
+import br.com.desafio.rav.partsSystem.dto.SimulationDTO;
+import br.com.desafio.rav.partsSystem.entities.Simulation;
+import br.com.desafio.rav.partsSystem.repositories.SimulationRepository;
 import br.com.desafio.rav.partsSystem.services.exceptions.DatabaseException;
 import br.com.desafio.rav.partsSystem.services.exceptions.ResourceNotFoundException;
 
 @Service
-public class PartService {
+public class SimulationService {
 	
 	@Autowired
-	private PartRepository repository;
+	private SimulationRepository repository;
 	
 	@Transactional(readOnly = true)
-	public List<PartDTO> findAll(){
-		List<Part> list = repository.findAll();
+	public List<SimulationDTO> findAll(){
+		List<Simulation> list = repository.findAll();
 		
-		return list.stream().map(x -> new PartDTO(x)).collect(Collectors.toList());
+		return list.stream().map(x -> new SimulationDTO(x)).collect(Collectors.toList());
 	}
 
 	@Transactional(readOnly = true)
-	public PartDTO findById(Long id) {
-		Optional<Part> obj = repository.findById(id);
-		Part entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		return new PartDTO(entity, entity.getPartChildren());
+	public SimulationDTO findById(Long id) {
+		Optional<Simulation> obj = repository.findById(id);
+		Simulation entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+		return new SimulationDTO(entity);
 	}
 
 	@Transactional
-	public PartDTO insert(PartDTO dto) {
-		Part entity = new Part();
+	public SimulationDTO insert(SimulationDTO dto) {
+		Simulation entity = new Simulation();
 		entity.setName(dto.getName());
-		entity.setWeight(dto.getWeight());
-		entity.setPrice(dto.getPrice());
-		entity.setType(dto.getType());
+		entity.setDescription(dto.getDescription());
 		entity = repository.save(entity);
-		return new PartDTO(entity);
+		return new SimulationDTO(entity);
 	}
 
 	@Transactional
-	public PartDTO update(Long id, PartDTO dto) {
+	public SimulationDTO update(Long id, SimulationDTO dto) {
 		try {
-			Part entity = repository.getOne(id);
+			Simulation entity = repository.getOne(id);
 			entity.setName(dto.getName());
-			entity.setWeight(dto.getWeight());
-			entity.setPrice(dto.getPrice());
-			entity.setType(dto.getType());
+			entity.setDescription(dto.getDescription());
 			entity = repository.save(entity);
-			return new PartDTO(entity);
+			return new SimulationDTO(entity);
 		}catch(EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}

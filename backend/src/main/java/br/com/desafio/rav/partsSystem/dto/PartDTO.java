@@ -3,7 +3,6 @@ package br.com.desafio.rav.partsSystem.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import br.com.desafio.rav.partsSystem.entities.Part;
 import br.com.desafio.rav.partsSystem.entities.PartChild;
@@ -40,9 +39,9 @@ public class PartDTO implements Serializable {
 		this.type = entity.getType();
 	}
 	
-	public PartDTO(Part entity, Set<PartChild> partChildren) {
+	public PartDTO(Part entity, List<PartChild> list) {
 		this(entity);
-		partChildren.forEach(p -> this.partChildren.add(new PartChildDTO(p)));
+		list.forEach(p -> this.partChildren.add(new PartChildDTO(p)));
 		
 	}
 
