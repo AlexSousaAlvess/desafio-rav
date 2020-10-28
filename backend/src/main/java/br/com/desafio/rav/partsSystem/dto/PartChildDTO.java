@@ -9,7 +9,7 @@ import br.com.desafio.rav.partsSystem.entities.Part;
 import br.com.desafio.rav.partsSystem.entities.PartChild;
 import br.com.desafio.rav.partsSystem.entities.enums.Status;
 
-public class PartDTO implements Serializable {
+public class PartChildDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
@@ -17,14 +17,12 @@ public class PartDTO implements Serializable {
 	private double weight;
 	private double price;
 	private Status type;
-	
-	private List<PartChildDTO> partChildren = new ArrayList<>();
 
-	public PartDTO() {
+	public PartChildDTO() {
 
 	}
 
-	public PartDTO(Long id, String name, double weight, double price, Status type) {
+	public PartChildDTO(Long id, String name, double weight, double price, Status type) {
 		this.id = id;
 		this.name = name;
 		this.weight = weight;
@@ -32,18 +30,12 @@ public class PartDTO implements Serializable {
 		this.type = type;
 	}
 
-	public PartDTO(Part entity) {
+	public PartChildDTO(PartChild entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.weight = entity.getWeight();
 		this.price = entity.getPrice();
 		this.type = entity.getType();
-	}
-	
-	public PartDTO(Part entity, Set<PartChild> partChildren) {
-		this(entity);
-		partChildren.forEach(p -> this.partChildren.add(new PartChildDTO(p)));
-		
 	}
 
 	public Long getId() {
@@ -85,15 +77,5 @@ public class PartDTO implements Serializable {
 	public void setType(Status type) {
 		this.type = type;
 	}
-
-	public List<PartChildDTO> getPartChildren() {
-		return partChildren;
-	}
-
-	public void setPartChildren(List<PartChildDTO> partChildren) {
-		this.partChildren = partChildren;
-	}
 	
-	
-
 }
