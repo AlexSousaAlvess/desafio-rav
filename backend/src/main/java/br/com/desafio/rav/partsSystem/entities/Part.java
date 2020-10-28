@@ -30,6 +30,8 @@ public class Part implements Serializable {
 	private Status type;
 	
 	private List<PartChild> partChildren = new ArrayList<>();
+	
+	private List<Simulation> simulations = new ArrayList<>();
 
 	public Part() {
 
@@ -85,6 +87,10 @@ public class Part implements Serializable {
 	
 	public List<PartChild> getPartChildren() {
 		return partChildren;
+	}
+
+	public List<Simulation> getSimulations() {
+		return simulations;
 	}
 
 	@Override
