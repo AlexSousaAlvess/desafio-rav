@@ -10,6 +10,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.desafio.rav.partsSystem.entities.enums.Status;
@@ -29,9 +32,12 @@ public class Part implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Status type;
 	
+	@OneToMany(mappedBy = "part")
 	private List<PartChild> partChildren = new ArrayList<>();
 	
-	private List<Simulation> simulations = new ArrayList<>();
+	@ManyToOne
+	@JoinColumn(name = "simulation_id")
+	private Simulation simulation;
 
 	public Part() {
 
@@ -87,10 +93,6 @@ public class Part implements Serializable {
 	
 	public List<PartChild> getPartChildren() {
 		return partChildren;
-	}
-
-	public List<Simulation> getSimulations() {
-		return simulations;
 	}
 
 	@Override

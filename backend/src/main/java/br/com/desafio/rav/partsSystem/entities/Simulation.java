@@ -1,15 +1,29 @@
 package br.com.desafio.rav.partsSystem.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_simulation")
 public class Simulation implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String name;
 	private String description;
 	
-	private Part part;
+	@OneToMany(mappedBy = "simulation")
+	private List<Part> parts = new ArrayList<>();
 	
 	public Simulation() {
 		
@@ -20,7 +34,6 @@ public class Simulation implements Serializable {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.part = part;
 	}
 
 	public long getId() {
@@ -47,12 +60,8 @@ public class Simulation implements Serializable {
 		this.description = description;
 	}
 
-	public Part getPart() {
-		return part;
-	}
-
-	public void setPart(Part part) {
-		this.part = part;
+	public List<Part> getParts() {
+		return parts;
 	}
 
 	@Override

@@ -8,6 +8,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.com.desafio.rav.partsSystem.entities.enums.Status;
@@ -27,6 +29,8 @@ public class PartChild implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Status type;
 	
+	@ManyToOne
+	@JoinColumn(name = "part_id")
 	private Part part;
 
 	public PartChild() {
