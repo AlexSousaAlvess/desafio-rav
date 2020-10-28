@@ -3,10 +3,14 @@ package br.com.desafio.rav.partsSystem.entities;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import br.com.desafio.rav.partsSystem.entities.enums.Status;
 
 @Entity
 @Table(name = "tb_part_child")
@@ -19,13 +23,17 @@ public class PartChild implements Serializable {
 	private String name;
 	private double weight;
 	private double price;
-	private String type;
+	
+	@Enumerated(EnumType.STRING)
+	private Status type;
+	
+	private Part part;
 
 	public PartChild() {
 
 	}
 
-	public PartChild(Long id, String name, double weight, double price, String type) {
+	public PartChild(Long id, String name, double weight, double price, Status type) {
 		this.id = id;
 		this.name = name;
 		this.weight = weight;
@@ -65,11 +73,11 @@ public class PartChild implements Serializable {
 		this.price = price;
 	}
 
-	public String getType() {
+	public Status getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(Status type) {
 		this.type = type;
 	}
 

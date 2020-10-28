@@ -1,6 +1,8 @@
 package br.com.desafio.rav.partsSystem.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -26,6 +28,8 @@ public class Part implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private Status type;
+	
+	private List<PartChild> partChildren = new ArrayList<>();
 
 	public Part() {
 
@@ -77,6 +81,10 @@ public class Part implements Serializable {
 
 	public void setType(Status type) {
 		this.type = type;
+	}
+	
+	public List<PartChild> getPartChildren() {
+		return partChildren;
 	}
 
 	@Override
