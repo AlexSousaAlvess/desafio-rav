@@ -27,7 +27,6 @@ public class PartChildService {
 	@Transactional(readOnly = true)
 	public List<PartChildDTO> findAll(){
 		List<PartChild> list = repository.findAll();
-		
 		return list.stream().map(x -> new PartChildDTO(x)).collect(Collectors.toList());
 	}
 

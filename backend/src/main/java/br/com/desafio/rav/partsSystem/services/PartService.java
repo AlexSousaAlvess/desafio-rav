@@ -20,16 +20,15 @@ import br.com.desafio.rav.partsSystem.services.exceptions.ResourceNotFoundExcept
 
 @Service
 public class PartService {
-	
+
 	@Autowired
 	private PartRepository repository;
-	
+
 	@Transactional(readOnly = true)
-	public List<PartDTO> findAll(){
-		List<Part> list = repository.findAll();
-		
-		return list.stream().map(x -> new PartDTO(x)).collect(Collectors.toList());
-	}
+    public List<PartDTO> findAll(){
+        List<Part> list = repository.findAll();
+        return list.stream().map(x -> new PartDTO(x, x.getPartChildren())).collect(Collectors.toList());
+    }
 
 	@Transactional(readOnly = true)
 	public PartDTO findById(Long id) {
@@ -59,7 +58,7 @@ public class PartService {
 			entity.setType(dto.getType());
 			entity = repository.save(entity);
 			return new PartDTO(entity);
-		}catch(EntityNotFoundException e) {
+		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}
 	}
@@ -67,9 +66,9 @@ public class PartService {
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
-		}catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
-		}catch(DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity Violation");
 		}
 	}

@@ -3,7 +3,6 @@ package br.com.desafio.rav.partsSystem.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import br.com.desafio.rav.partsSystem.entities.Part;
 import br.com.desafio.rav.partsSystem.entities.Simulation;
@@ -33,9 +32,9 @@ public class SimulationDTO implements Serializable {
 		this.description = entity.getDescription();
 	}
 	
-	public SimulationDTO(Simulation entity, Set<Part> parts) {
+	public SimulationDTO(Simulation entity, List<Part> list) {
 		this(entity);
-		parts.forEach(p -> this.parts.add(new PartDTO(p)));
+		list.forEach(p -> this.parts.add(new PartDTO(p)));
 	}
 
 	public Long getId() {

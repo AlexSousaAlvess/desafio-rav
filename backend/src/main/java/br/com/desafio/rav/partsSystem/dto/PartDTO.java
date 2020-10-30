@@ -42,7 +42,6 @@ public class PartDTO implements Serializable {
 	public PartDTO(Part entity, List<PartChild> list) {
 		this(entity);
 		list.forEach(p -> this.partChildren.add(new PartChildDTO(p)));
-		
 	}
 
 	public Long getId() {
