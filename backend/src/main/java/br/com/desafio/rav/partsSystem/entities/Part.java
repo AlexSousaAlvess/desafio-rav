@@ -11,8 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -36,9 +34,9 @@ public class Part implements Serializable {
 	@OneToMany(mappedBy = "part", fetch = FetchType.EAGER)
 	private List<PartChild> partChildren = new ArrayList<>();
 	
-	@ManyToOne
-	@JoinColumn(name = "simulation_id")
-	private Simulation simulation;
+//	@ManyToOne
+//	@JoinColumn(name = "simulation_id")
+//	private Simulation simulation;
 
 	public Part() {
 

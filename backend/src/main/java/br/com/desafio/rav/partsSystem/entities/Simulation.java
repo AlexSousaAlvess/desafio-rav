@@ -1,14 +1,17 @@
 package br.com.desafio.rav.partsSystem.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,10 +23,17 @@ public class Simulation implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String name;
+	
+	@Column(columnDefinition = "TEXT")
 	private String description;
 	
-	@OneToMany(mappedBy = "simulation")
-	private List<Part> parts = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(
+			name = "tb_part_simulation",
+			joinColumns = @JoinColumn(name = "simulation_id"),
+			inverseJoinColumns = @JoinColumn(name = "part_id")
+	)
+	private Set<Part> parts = new HashSet<>();
 	
 	public Simulation() {
 		
@@ -60,7 +70,7 @@ public class Simulation implements Serializable {
 		this.description = description;
 	}
 
-	public List<Part> getParts() {
+	public Set<Part> getParts() {
 		return parts;
 	}
 
