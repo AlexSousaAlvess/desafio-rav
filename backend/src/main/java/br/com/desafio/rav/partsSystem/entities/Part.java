@@ -7,11 +7,12 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import br.com.desafio.rav.partsSystem.entities.enums.Status;
@@ -30,13 +31,13 @@ public class Part implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private Status type;
+
+	@ManyToMany
+	@JoinTable(name = "tb_part_part_child",
+		joinColumns = @JoinColumn(name = "part_id"),
+		inverseJoinColumns = @JoinColumn(name = "part_child_id"))
 	
-	@OneToMany(mappedBy = "part", fetch = FetchType.EAGER)
 	private List<PartChild> partChildren = new ArrayList<>();
-	
-//	@ManyToOne
-//	@JoinColumn(name = "simulation_id")
-//	private Simulation simulation;
 
 	public Part() {
 
@@ -89,7 +90,7 @@ public class Part implements Serializable {
 	public void setType(Status type) {
 		this.type = type;
 	}
-	
+
 	public List<PartChild> getPartChildren() {
 		return partChildren;
 	}

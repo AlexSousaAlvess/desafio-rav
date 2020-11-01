@@ -6,28 +6,35 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.desafio.rav.partsSystem.dto.PartDTO;
 import br.com.desafio.rav.partsSystem.dto.SimulationDTO;
+import br.com.desafio.rav.partsSystem.entities.Part;
 import br.com.desafio.rav.partsSystem.entities.Simulation;
+import br.com.desafio.rav.partsSystem.repositories.PartRepository;
 import br.com.desafio.rav.partsSystem.repositories.SimulationRepository;
 import br.com.desafio.rav.partsSystem.services.exceptions.DatabaseException;
 import br.com.desafio.rav.partsSystem.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class SimulationService {
-	
+
 	@Autowired
 	private SimulationRepository repository;
-	
+
+	@Autowired
+	private PartRepository partRepository;
+
 	@Transactional(readOnly = true)
-	public List<SimulationDTO> findAll(){
+	public List<SimulationDTO> findAll() {
 		List<Simulation> list = repository.findAll();
-		
+
 		return list.stream().map(x -> new SimulationDTO(x, x.getParts())).collect(Collectors.toList());
 	}
 
@@ -41,8 +48,7 @@ public class SimulationService {
 	@Transactional
 	public SimulationDTO insert(SimulationDTO dto) {
 		Simulation entity = new Simulation();
-		entity.setName(dto.getName());
-		entity.setDescription(dto.getDescription());
+		copyDtoToEntity(dto, entity);
 		entity = repository.save(entity);
 		return new SimulationDTO(entity);
 	}
@@ -51,11 +57,10 @@ public class SimulationService {
 	public SimulationDTO update(Long id, SimulationDTO dto) {
 		try {
 			Simulation entity = repository.getOne(id);
-			entity.setName(dto.getName());
-			entity.setDescription(dto.getDescription());
+			copyDtoToEntity(dto, entity);
 			entity = repository.save(entity);
 			return new SimulationDTO(entity);
-		}catch(EntityNotFoundException e) {
+		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}
 	}
@@ -63,11 +68,24 @@ public class SimulationService {
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
-		}catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
-		}catch(DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity Violation");
 		}
+	}
+
+	private void copyDtoToEntity(SimulationDTO dto, Simulation entity) {
+		entity.setName(dto.getName());
+		entity.setDescription(dto.getDescription());
+
+		entity.getParts().clear();
+		for (PartDTO partDto : dto.getParts()) {
+			
+			Part part = partRepository.getOne(partDto.getId());
+			entity.getParts().add(part);
+		}
+
 	}
 
 }

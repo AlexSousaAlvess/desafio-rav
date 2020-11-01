@@ -81,9 +81,17 @@ public class PartService {
 
 		entity.getPartChildren().clear();
 		for (PartChildDTO childDto : dto.getPartChildren()) {
+			
 			PartChild partChild = partChildRepository.getOne(childDto.getId());
 			entity.getPartChildren().add(partChild);
 		}
 	}
+	
+	
+//	public List<PartDTO> findAll() {
+//		List<Part> list = repository.findAll();
+//		return list.stream().map(x -> new PartDTO(x, x.getPartChildren())).collect(Collectors.toList());
+//	}
+	
 
 }
