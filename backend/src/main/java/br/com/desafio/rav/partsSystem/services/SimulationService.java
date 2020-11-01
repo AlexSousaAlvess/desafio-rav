@@ -28,14 +28,14 @@ public class SimulationService {
 	public List<SimulationDTO> findAll(){
 		List<Simulation> list = repository.findAll();
 		
-		return list.stream().map(x -> new SimulationDTO(x)).collect(Collectors.toList());
+		return list.stream().map(x -> new SimulationDTO(x, x.getParts())).collect(Collectors.toList());
 	}
 
 	@Transactional(readOnly = true)
 	public SimulationDTO findById(Long id) {
 		Optional<Simulation> obj = repository.findById(id);
 		Simulation entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		return new SimulationDTO(entity);
+		return new SimulationDTO(entity, entity.getParts());
 	}
 
 	@Transactional
