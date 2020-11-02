@@ -1,0 +1,30 @@
+.ant-layout-sider {
+  color: #fff;
+  line-height: 100vh;
+  background: #95d5b2;
+}
+
+.logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.ant-menu.ant-menu-dark.ant-menu-root.ant-menu-inline {
+  background: #95d5b2;
+}
+
+.ant-menu.ant-menu-dark.ant-menu-inline-collapsed.ant-menu-root.ant-menu-vertical {
+  background: #95d5b2;
+}
+
+.ant-layout-sider-trigger {
+  background: #95d5b2;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+[data-theme="dark"] .site-layout .site-layout-background {
+  background: #141414;
+}
