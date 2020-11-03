@@ -1,7 +1,7 @@
 .ant-layout-sider {
   color: #fff;
-  line-height: 100vh;
   background: #95d5b2;
+  height: 100vh;
 }
 
 .logo {
@@ -24,7 +24,4 @@
 
 .site-layout .site-layout-background {
   background: #fff;
-}
-[data-theme="dark"] .site-layout .site-layout-background {
-  background: #141414;
 }
