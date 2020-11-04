@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+
+import { Button, Modal, Form, Input } from "antd";
 
 import Sidebar from "../../components/Sidebar";
-
-import MyButton from "../../components/Button";
 
 import MyTable from "../../components/Table";
 
@@ -144,13 +144,50 @@ const columns = [
 ];
 
 const Simulation = () => {
+  const [visibleModal, setVisibleModal] = useState(false);
+
+  function handleShowModal(e) {
+    e.preventDefault();
+    setVisibleModal(true);
+  }
+
+  function handleOkModal(e) {
+    e.preventDefault();
+    console.log("ok");
+    setVisibleModal(false);
+  }
+
+  function handleCancelModal(e) {
+    e.preventDefault();
+    console.log("cancel");
+    setVisibleModal(false);
+  }
+
   return (
     <div className="container">
       <Sidebar />
       <div className="wrapper">
         <div className="header">
           <h1>Simulações</h1>
-          <MyButton name="+" />
+          <Button type="primary" shape="circle" onClick={handleShowModal}>
+            +
+          </Button>
+
+          <Modal
+            title="Nova simulação"
+            visible={visibleModal}
+            onOk={handleOkModal}
+            onCancel={handleCancelModal}
+          >
+            <Form>
+              <Form.Item label="Nome">
+                <Input />
+              </Form.Item>
+              <Form.Item name="Descrição" label="Descrição">
+                <Input.TextArea />
+              </Form.Item>
+            </Form>
+          </Modal>
         </div>
         <MyTable columns={columns} data={data} />
       </div>
