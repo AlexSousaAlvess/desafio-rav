@@ -16,13 +16,36 @@ import "antd/dist/antd.css";
 
 const Part = () => {
   const [parts, setParts] = useState([]);
+  const [partChildren, setPartChildren] = useState([]);
   const [visibleModal, setVisibleModal] = useState(false);
+
+  const history = useHistory();
 
   useEffect(() => {
     api.get(`parts`).then((response) => {
       setParts(response.data);
     });
   }, [parts]);
+
+  useEffect(() => {
+    api.get(`partChildren`).then((response) => {
+      setPartChildren(response.data);
+    });
+  }, [partChildren]);
+
+  function handleSubmitPart(values) {
+    console.log(values);
+    history.push("/");
+    api
+      .post(`parts`, values)
+      .then((res) => {
+        console.log("Added Successfully!");
+        history.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   function handleShowModal(e) {
     e.preventDefault();
@@ -83,6 +106,18 @@ const Part = () => {
     return data;
   });
 
+  partChildren.map((partChild, index) => {
+    data.push({
+      key: index + 1000,
+      name: partChild.name,
+      weight: partChild.weight,
+      price: partChild.price,
+      type: partChild.type,
+      acoes: "Delete",
+    });
+    return data;
+  });
+
   return (
     <div className="container">
       <Sidebar />
@@ -99,11 +134,30 @@ const Part = () => {
             onOk={handleOkModal}
             onCancel={handleCancelModal}
           >
-            <Form>
-              <Form.Item label="Nome">
-                <Input />
+            <Form onFinish={handleSubmitPart}>
+              <Form.Item
+                name="name"
+                label="Nome"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor digite um nome",
+                  },
+                ]}
+              >
+                <Input placeholder="informe o nome da peça" />
               </Form.Item>
-              <Form.Item label="Tipo">
+
+              <Form.Item
+                name="type"
+                label="Tipo"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor escolha um tipo",
+                  },
+                ]}
+              >
                 <TreeSelect
                   treeData={[
                     {
@@ -137,12 +191,45 @@ const Part = () => {
                   ]}
                 />
               </Form.Item>
-              <Form.Item label="Peso">
-                <InputNumber />
+
+              <Form.Item
+                name="weight"
+                label="Peso"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor digite o peso",
+                  },
+                ]}
+              >
+                <InputNumber placeholder="informe o peso da peça" />
               </Form.Item>
-              <Form.Item label="Valor">
-                <InputNumber />
+
+              <Form.Item
+                name="price"
+                label="Valor"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor digite o peso",
+                  },
+                ]}
+              >
+                <InputNumber placeholder="informe o preço da peça" />
               </Form.Item>
+
+              <div style={{ textAlign: "right" }}>
+                <Button type="primary" htmlType="submit">
+                  Salvar
+                </Button>{" "}
+                <Button
+                  type="danger"
+                  htmlType="button"
+                  onClick={() => history.push("/")}
+                >
+                  Cancelar
+                </Button>
+              </div>
             </Form>
           </Modal>
         </div>
