@@ -38,6 +38,7 @@ const Simulation = () => {
       partObj.push({
         id: parseInt(value),
       });
+      return partObj;
     });
     let assemblyValue = {
       name: values.name,
@@ -75,10 +76,6 @@ const Simulation = () => {
     console.log("cancel");
     setVisibleModal(false);
   }
-
-  const handleSizeChange = (e) => {
-    setSize(e.target.value);
-  };
 
   const children = [];
 

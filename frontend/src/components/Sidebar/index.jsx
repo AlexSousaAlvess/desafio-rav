@@ -11,7 +11,7 @@ import { Layout, Menu, Image } from "antd";
 
 import { SettingFilled, FileTextOutlined } from "@ant-design/icons";
 
-const { Sider, Header, Content } = Layout;
+const { Sider } = Layout;
 
 const Sidebar = () => {
   const [collapse, setCollapse] = useState(false);
@@ -19,11 +19,6 @@ const Sidebar = () => {
   useEffect(() => {
     window.innerWidth <= 760 ? setCollapse(true) : setCollapse(false);
   }, []);
-
-  const handleToggle = (event) => {
-    event.preventDefault();
-    collapse ? setCollapse(false) : setCollapse(true);
-  };
 
   return (
     <>

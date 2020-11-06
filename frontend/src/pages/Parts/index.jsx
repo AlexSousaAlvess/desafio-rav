@@ -95,14 +95,6 @@ const Part = () => {
     setVisibleModal(false);
   }
 
-  function handleDelete(key, e) {
-    e.preventDefault();
-    let valueIndex = data.indexOf(key);
-    console.log(valueIndex);
-    console.log(data);
-    data.splice(valueIndex, 1);
-  }
-
   let data = [{}];
 
   let columns = [
