@@ -4,11 +4,20 @@ import { useHistory } from "react-router-dom";
 
 import api from "../../services/api";
 
-import { Button, Modal, Form, Input, TreeSelect, InputNumber } from "antd";
+import {
+  Button,
+  Modal,
+  Tabs,
+  Form,
+  Input,
+  Select,
+  InputNumber,
+  Table,
+  Row,
+  Col,
+} from "antd";
 
 import Sidebar from "../../components/Sidebar";
-
-import MyTable from "../../components/Table";
 
 import "./styles.css";
 
@@ -20,6 +29,10 @@ const Part = () => {
   const [visibleModal, setVisibleModal] = useState(false);
 
   const history = useHistory();
+
+  const { TabPane } = Tabs;
+
+  const { Option } = Select;
 
   useEffect(() => {
     api.get(`parts`).then((response) => {
@@ -40,10 +53,28 @@ const Part = () => {
       .post(`parts`, values)
       .then((res) => {
         console.log("Added Successfully!");
+        setVisibleModal(false);
         history.push("/");
       })
       .catch((error) => {
         console.log(error);
+        setVisibleModal(false);
+      });
+  }
+
+  function handleSubmitPartChild(values) {
+    console.log(values);
+    history.push("/");
+    api
+      .post(`partChildren`, values)
+      .then((res) => {
+        console.log("Added Successfully!");
+        setVisibleModal(false);
+        history.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        setVisibleModal(false);
       });
   }
 
@@ -63,6 +94,16 @@ const Part = () => {
     console.log("cancel");
     setVisibleModal(false);
   }
+
+  function handleDelete(key, e) {
+    e.preventDefault();
+    let valueIndex = data.indexOf(key);
+    console.log(valueIndex);
+    console.log(data);
+    data.splice(valueIndex, 1);
+  }
+
+  let data = [{}];
 
   let columns = [
     {
@@ -85,35 +126,36 @@ const Part = () => {
       dataIndex: "type",
       key: "type",
     },
-    {
-      title: "Ações",
-      dataIndex: "acoes",
-      key: "acoes",
-    },
+    // {
+    //   title: "Ações",
+    //   dataIndex: "",
+    //   key: "action",
+    //   render: (text, record) => (
+    //     <span onClick={(e) => handleDelete(record, e)}>
+    //       <a href="/">Deletar</a>
+    //     </span>
+    //   ),
+    // },
   ];
 
-  let data = [{}];
-
-  parts.map((part, index) => {
+  parts.map((part) => {
     data.push({
-      key: index,
+      key: part.id,
       name: part.name,
       weight: part.weight,
       price: part.price,
       type: part.type,
-      acoes: "Delete",
     });
     return data;
   });
 
-  partChildren.map((partChild, index) => {
+  partChildren.map((partChild) => {
     data.push({
-      key: index + 1000,
+      key: partChild.id + 1000,
       name: partChild.name,
       weight: partChild.weight,
       price: partChild.price,
       type: partChild.type,
-      acoes: "Delete",
     });
     return data;
   });
@@ -134,107 +176,164 @@ const Part = () => {
             onOk={handleOkModal}
             onCancel={handleCancelModal}
           >
-            <Form onFinish={handleSubmitPart}>
-              <Form.Item
-                name="name"
-                label="Nome"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor digite um nome",
-                  },
-                ]}
-              >
-                <Input placeholder="informe o nome da peça" />
-              </Form.Item>
+            <Tabs defaultActiveKey="1">
+              <TabPane tab="Peça primaria" key="1">
+                <Form onFinish={handleSubmitPart}>
+                  <Form.Item
+                    name="name"
+                    label="Nome"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor digite um nome",
+                      },
+                    ]}
+                  >
+                    <Input placeholder="informe o nome da peça" />
+                  </Form.Item>
 
-              <Form.Item
-                name="type"
-                label="Tipo"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor escolha um tipo",
-                  },
-                ]}
-              >
-                <TreeSelect
-                  treeData={[
-                    {
-                      title: "Peça pai",
-                      value: "Peça pai",
-                      children: [
-                        {
-                          title: "Geral",
-                          value: "Geral",
-                        },
-                        {
-                          title: "Exterior",
-                          value: "Exterior",
-                        },
-                      ],
-                    },
-                    {
-                      title: "Peça filha",
-                      value: "Peça filha",
-                      children: [
-                        {
-                          title: "Exterior",
-                          value: "Exterior",
-                        },
-                        {
-                          title: "Interior",
-                          value: "Interior",
-                        },
-                      ],
-                    },
-                  ]}
-                />
-              </Form.Item>
+                  <Form.Item
+                    name="type"
+                    label="Tipo"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor escolha um tipo",
+                      },
+                    ]}
+                  >
+                    <Select placeholder="Escolha o tipo da peça">
+                      <Option value="Geral">Geral</Option>
+                      <Option value="Exterior">Exterior</Option>
+                    </Select>
+                  </Form.Item>
 
-              <Form.Item
-                name="weight"
-                label="Peso"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor digite o peso",
-                  },
-                ]}
-              >
-                <InputNumber placeholder="informe o peso da peça" />
-              </Form.Item>
+                  <Form.Item
+                    name="weight"
+                    label="Peso"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor digite o peso",
+                      },
+                    ]}
+                  >
+                    <InputNumber placeholder="informe o peso da peça" />
+                  </Form.Item>
 
-              <Form.Item
-                name="price"
-                label="Valor"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor digite o peso",
-                  },
-                ]}
-              >
-                <InputNumber placeholder="informe o preço da peça" />
-              </Form.Item>
+                  <Form.Item
+                    name="price"
+                    label="Valor"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor digite o peso",
+                      },
+                    ]}
+                  >
+                    <InputNumber placeholder="informe o preço da peça" />
+                  </Form.Item>
 
-              <div style={{ textAlign: "right" }}>
-                <Button type="primary" htmlType="submit">
-                  Salvar
-                </Button>{" "}
-                <Button
-                  type="danger"
-                  htmlType="button"
-                  onClick={() => history.push("/")}
-                >
-                  Cancelar
-                </Button>
-              </div>
-            </Form>
+                  <div style={{ textAlign: "right" }}>
+                    <Button type="primary" htmlType="submit">
+                      Salvar
+                    </Button>{" "}
+                    <Button
+                      type="danger"
+                      htmlType="button"
+                      onClick={() => {
+                        setVisibleModal(false);
+                        history.push("/");
+                      }}
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+                </Form>
+              </TabPane>
+              <TabPane tab="Peça secundaria" key="2">
+                <Form onFinish={handleSubmitPartChild}>
+                  <Form.Item
+                    name="name"
+                    label="Nome"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor digite um nome",
+                      },
+                    ]}
+                  >
+                    <Input placeholder="informe o nome da peça" />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="type"
+                    label="Tipo"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor escolha um tipo",
+                      },
+                    ]}
+                  >
+                    <Select placeholder="Escolha o tipo da peça">
+                      <Option value="Geral">Exterior</Option>
+                      <Option value="Exterior">Inferior</Option>
+                    </Select>
+                  </Form.Item>
+
+                  <Form.Item
+                    name="weight"
+                    label="Peso"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor digite o peso",
+                      },
+                    ]}
+                  >
+                    <InputNumber placeholder="informe o peso da peça" />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="price"
+                    label="Valor"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor digite o peso",
+                      },
+                    ]}
+                  >
+                    <InputNumber placeholder="informe o preço da peça" />
+                  </Form.Item>
+
+                  <div style={{ textAlign: "right" }}>
+                    <Button type="primary" htmlType="submit">
+                      Salvar
+                    </Button>{" "}
+                    <Button
+                      type="danger"
+                      htmlType="button"
+                      onClick={() => {
+                        setVisibleModal(false);
+                        history.push("/");
+                      }}
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+                </Form>
+              </TabPane>
+            </Tabs>
           </Modal>
         </div>
 
-        <MyTable columns={columns} data={data} />
+        <Row gutter={[40, 0]}>
+          <Col span={24}>
+            <Table columns={columns} dataSource={data} />
+          </Col>
+        </Row>
       </div>
     </div>
   );

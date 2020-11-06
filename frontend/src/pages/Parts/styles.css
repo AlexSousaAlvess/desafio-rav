@@ -20,3 +20,7 @@
 .ant-modal-footer {
   display: none;
 }
+
+.ant-table-tbody tr:nth-child(1) {
+  display: none;
+}

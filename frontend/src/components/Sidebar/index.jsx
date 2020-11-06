@@ -1,22 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+import LogoImage from "../../assets/logotipo.png";
 
 import { Link } from "react-router-dom";
 
 import "antd/dist/antd.css";
 import "./styles.css";
 
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Image } from "antd";
 
 import { SettingFilled, FileTextOutlined } from "@ant-design/icons";
 
-const { Sider } = Layout;
+const { Sider, Header, Content } = Layout;
 
 const Sidebar = () => {
+  const [collapse, setCollapse] = useState(false);
+
+  useEffect(() => {
+    window.innerWidth <= 760 ? setCollapse(true) : setCollapse(false);
+  }, []);
+
+  const handleToggle = (event) => {
+    event.preventDefault();
+    collapse ? setCollapse(false) : setCollapse(true);
+  };
+
   return (
     <>
-      <Sider collapsible>
-        <div className="logo" />
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+      <Sider trigger={null} collapsible collapsed={collapse}>
+        <Link to="/">
+          <Image src={LogoImage} className="logo" />
+        </Link>
+        <Menu theme="dark" mode="inline">
           <Menu.Item key="1" icon={<SettingFilled />}>
             <Link to="/">Peças</Link>
           </Menu.Item>

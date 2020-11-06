@@ -1,150 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import { Button, Modal, Form, Input } from "antd";
+import { useHistory } from "react-router-dom";
+
+import api from "../../services/api";
+
+import { Button, Modal, Form, Input, Select, Table, Row, Col } from "antd";
 
 import Sidebar from "../../components/Sidebar";
 
-import MyTable from "../../components/Table";
-
 import "./styles.css";
 
-const data = [
-  {
-    key: "1",
-    nome: "Jim Green",
-    descrição: "London No. 1 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "2",
-    nome: "Jim Green",
-    descrição: "London No. 1 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "3",
-    nome: "Joe Black",
-    descrição: "Sidney No. 1 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "4",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "5",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "6",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "7",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "8",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "9",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "10",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "11",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "12",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "13",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "14",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "15",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "16",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "17",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "18",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-  {
-    key: "19",
-    nome: "Jim Red",
-    descrição: "London No. 2 Lake Park",
-    ações: "delete",
-  },
-];
-
-const columns = [
-  {
-    title: "Nome",
-    dataIndex: "nome",
-    key: "nome",
-  },
-  {
-    title: "Descrição",
-    dataIndex: "descrição",
-    key: "descrição",
-  },
-  {
-    title: "Ações",
-    dataIndex: "ações",
-    key: "ações",
-  },
-];
-
 const Simulation = () => {
+  const [simulations, setSimulations] = useState([]);
+  const [parts, setParts] = useState([]);
   const [visibleModal, setVisibleModal] = useState(false);
+  const [size, setSize] = React.useState("default");
+
+  const history = useHistory();
+
+  const { Option } = Select;
+
+  useEffect(() => {
+    api.get(`simulations`).then((response) => {
+      setSimulations(response.data);
+    });
+  }, [simulations]);
+
+  useEffect(() => {
+    api.get(`parts`).then((response) => {
+      setParts(response.data);
+    });
+  }, [parts]);
+
+  function handleSubmitSimulation(values) {
+    let partObj = [];
+    values.parts.map((value) => {
+      partObj.push({
+        id: parseInt(value),
+      });
+    });
+    let assemblyValue = {
+      name: values.name,
+      description: values.description,
+      parts: partObj,
+    };
+    console.log(assemblyValue);
+    history.push("/simulations");
+    api
+      .post(`simulations`, assemblyValue)
+      .then((res) => {
+        console.log("Added Successfully!");
+        setVisibleModal(false);
+        history.push("/simulations");
+      })
+      .catch((error) => {
+        console.log(error);
+        setVisibleModal(false);
+      });
+  }
 
   function handleShowModal(e) {
     e.preventDefault();
@@ -163,6 +76,45 @@ const Simulation = () => {
     setVisibleModal(false);
   }
 
+  const handleSizeChange = (e) => {
+    setSize(e.target.value);
+  };
+
+  const children = [];
+
+  parts.map((part) => {
+    children.push(<Option key={part.id}>{part.name}</Option>);
+    return children;
+  });
+
+  function handleChange(value) {
+    console.log(`selected ${value}`);
+  }
+
+  const data = [{}];
+
+  const columns = [
+    {
+      title: "Nome",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Descrição",
+      dataIndex: "description",
+      key: "description",
+    },
+  ];
+
+  simulations.map((simulation) => {
+    data.push({
+      key: simulation.id,
+      name: simulation.name,
+      description: simulation.description,
+    });
+    return data;
+  });
+
   return (
     <div className="container">
       <Sidebar />
@@ -179,17 +131,67 @@ const Simulation = () => {
             onOk={handleOkModal}
             onCancel={handleCancelModal}
           >
-            <Form>
-              <Form.Item label="Nome">
-                <Input />
+            <Form onFinish={handleSubmitSimulation}>
+              <Form.Item
+                name="name"
+                label="Nome"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor digite um nome",
+                  },
+                ]}
+              >
+                <Input placeholder="informe o nome da simulação" />
               </Form.Item>
-              <Form.Item name="Descrição" label="Descrição">
+              <Form.Item
+                name="description"
+                label="Descrição"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor digite uma descrição",
+                  },
+                ]}
+              >
                 <Input.TextArea />
               </Form.Item>
+              <Form.Item name="parts" label="Peças usadas">
+                <Select
+                  mode="multiple"
+                  size={size}
+                  placeholder="Please select"
+                  onChange={handleChange}
+                  style={{ width: "100%" }}
+                >
+                  {children}
+                </Select>
+              </Form.Item>
+
+              <div style={{ textAlign: "right" }}>
+                <Button type="primary" htmlType="submit">
+                  Salvar
+                </Button>{" "}
+                <Button
+                  type="danger"
+                  htmlType="button"
+                  onClick={() => {
+                    setVisibleModal(false);
+                    history.push("/simulations");
+                  }}
+                >
+                  Cancelar
+                </Button>
+              </div>
             </Form>
           </Modal>
         </div>
-        <MyTable columns={columns} data={data} />
+
+        <Row gutter={[40, 0]}>
+          <Col span={24}>
+            <Table columns={columns} dataSource={data} />
+          </Col>
+        </Row>
       </div>
     </div>
   );
