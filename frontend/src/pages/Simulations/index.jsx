@@ -14,7 +14,6 @@ const Simulation = () => {
   const [simulations, setSimulations] = useState([]);
   const [parts, setParts] = useState([]);
   const [visibleModal, setVisibleModal] = useState(false);
-  const [size, setSize] = React.useState("default");
 
   const history = useHistory();
 
@@ -156,7 +155,6 @@ const Simulation = () => {
               <Form.Item name="parts" label="Peças usadas">
                 <Select
                   mode="multiple"
-                  size={size}
                   placeholder="Please select"
                   onChange={handleChange}
                   style={{ width: "100%" }}
