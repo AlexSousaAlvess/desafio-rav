@@ -11,5 +11,5 @@
 <p>Link para o download do arquivo .json com todas as requisições da API para servir como "documentação": 
 https://drive.google.com/drive/folders/1m-E2FY5YVNH7JdiqTZxT_XYEE9z2KjU_?usp=sharing</p>
 
-![10](https://user-images.githubusercontent.com/8229999/98429420-36610800-2085-11eb-8e18-4c02bb900001.PNG)
+![10_Easy-Resize com (1)](https://user-images.githubusercontent.com/8229999/98429617-7c6a9b80-2086-11eb-9625-a54bde924e14.jpg)
 
